@@ -1,41 +1,75 @@
-# bimsc23-datamgmt-session05
+# session06
+
+## Project submission
+
+### Create your own Github branch
+Clone this repository and create new branch (from main) named with your name. 
+Do not edit any existing files in this repository. That might cause conflicts when trying to merge your branch back to main branch.
+
+### Run project locally
+In terminal, run `npm i` or `npm install` to install packages.
+To run project with Rhino.Compute, start `rhino.compute.exe` and type `npm run serve` in terminal.
+
+### Add your submission files
+1. Add new folder inside of `.src/submission/` folder with your name. 
+
+Your submission folder structure
+
+    /src/submissions/yourfolder
+    ├── {yourname}.vue              # Main Vue component with your submission
+    ├── components/                 # Folder for your own components
+      ├── YourCustomComponent.vue   # All your Vue components
+    ├── assets/                     # Automated tests (alternatively `spec` or `tests`)
+       ├── definition.gh            # Your grasshopper definition
+       ├── other files              # If you are using other files as images, music etc. place it in assets folder.
 
 
-## requirements to run this repository:
+2. Place your project inside of this folder. Folder should contain one main Vue component named {yourname}.vue. 
+3. All other components should be placed inside of `.src/submission/{yourfoldername}/components` folder. 
+4. Other assets like images, Grasshopper definitions place inside `.src/submission/{yourfoldername}/assets` folder.
 
-#### Install Node.js
-Download latest stable version from https://nodejs.org/en/ and run the .msi file. 
+Once you are ready to submit your assignment, select `Create Pull Request` in Github Desktop. 
 
-To check if node was installed, open terminal (command line/ Powershell etc) and type command
-node -v
+### Using common Vue components
+In folder `.src/components` you can find Vue components with Slider, Toggle etc. If you want to use those components
+inside of you project, import them using this format:
+` import {ComponentName} from "commoncomponents/{ComponentName}.vue`
 
-It should return the Node.js version. Now you have installed Node.js. As part of the installation, the npm was installed. We will be using npm to manage and install packages.
-
-####  Install Vue
-To install Vue, run this command in your terminal:
-npm install -g @vue/cli
-
-It might take some time to install. 
-
-####  Install Vue helpful extensions
-In VisualStudioCode, go to Extensions and install Volar extension:
-https://marketplace.visualstudio.com/items?itemName=Vue.volar
-
-
-### Install all necesary dependencies for the project
+For example, to import `ToggleInput` write:
 ```
-npm run i
+import ToggleInput from "commoncomponents/ToggleInput.vue";
 ```
 
-### Compiles and hot-reloads for development
+This template should help get you started developing with Vue 3 in Vite.
 
+## Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+## Project Setup
+
+```sh
+npm install
 ```
-npm run serve
+
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
 ```
 
+### Compile and Minify for Production
 
-## References:
-* Vue.js official guide: https://vuejs.org/guide/introduction.html
-* Vue.js tutorial: https://vuejs.org/tutorial/#step-1ml
-* About reactivity https://blog.logrocket.com/understanding-vue-refs/#:~:text=Ref%20s%20are%20Vue.,element%20in%20your%20Vue%20instance.
+```sh
+npm run build
+```
 
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```

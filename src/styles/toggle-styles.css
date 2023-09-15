@@ -6,11 +6,11 @@
     margin: 9px 0px;
   }
 
-  .checkbox-wrapper-22 .switch input {
-    display:none;
-  }
+.checkbox-wrapper-22 .switch input {
+    display:inline-block;
+  }  */
 
-  .checkbox-wrapper-22 .slider {
+.checkbox-wrapper-22 .slider {
     background-color: #ccc;
     bottom: 0;
     cursor: pointer;
@@ -19,9 +19,9 @@
     right: 0;
     top: 0;
     transition: .4s;
-  }
+  } 
 
-  .checkbox-wrapper-22 .slider:before {
+ .checkbox-wrapper-22 .slider:before {
     background-color: #fff;
     bottom: 4px;
     content: "";
@@ -46,4 +46,4 @@
 
   .checkbox-wrapper-22 .slider.round:before {
     border-radius: 50%;
-  }
+  } 

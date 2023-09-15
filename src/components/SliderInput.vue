@@ -1,40 +1,43 @@
 <script setup>
 import { ref } from "vue";
-// Define properties that you will be able to access from parent component. 
-// Those properties will be binded from parent to child. 
+// Define properties that you will be able to access from parent component.
+// Those properties will be binded from parent to child.
 // Available JavaScript types: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures
-const props = defineProps(['title', 'min', 'max', 'step'])
+const props = defineProps(["title", "min", "max", "step", "val"]);
 
-const titlec = ref(props.title)
+const titlec = ref(props.title);
 // Define events that will be accessible from parent component
-const emits = defineEmits(['updateValue'])
+const emits = defineEmits(["updateValue"]);
 
+// TODO setup initial slider value
+// const ival = ref(props.initialvalue)
 
+var sliderValue = ref(props.val);
 
-var sliderValue = ref(25)
-
-function sendValueUpate()
-{
-  emits('updateValue', sliderValue.value, titlec.value)
+function sendValueUpate() {
+  emits("updateValue", sliderValue.value, titlec.value);
 }
-
-
 </script>
 
 <template>
-<div>
-	<form class="definition-input">
-			<label class="input-title" for="range-slider">{{ title }}: {{ sliderValue }}</label>
+  <div>
+    <form class="definition-input">
+      <label class="input-title" for="range-slider"
+        >{{ title }}: {{ sliderValue }}
+      </label>
 
-			<input type="range" class="modern-range"
-			v-bind:min="min" v-bind:max="max" v-bind:step="step"
-			v-model="sliderValue" 
-      v-on:input="sendValueUpate"
-			/>
-	</form>
-</div>
-
-
+      <input
+        type="range"
+        class="modern-range"
+        v-bind:min="min"
+        v-bind:max="max"
+        v-bind:step="step"
+        v-bind:val="val"
+        v-model="sliderValue"
+        v-on:mouseup="sendValueUpate"
+      />
+    </form>
+  </div>
 </template>
 
 <style scoped>
