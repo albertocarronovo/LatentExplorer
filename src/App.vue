@@ -1,84 +1,73 @@
-<!-- // Script is in some way equivalent to script.js. This is place
-to define variables, methods and imports of other Vue compoennts. -->
 <script setup>
-// Import other Vue components in order to add them to a template.
-import SliderInput from "./components/SliderInput.vue";
-import ToggleInput from "./components/ToggleInput.vue";
-import GeometryView from "./components/GeometryView.vue";
-
 // Imports from packages
+import { ref, onMounted } from "vue";
+import { loadRhino } from "@/scripts/compute.js";
 
-// Understanding ref article: https://blog.logrocket.com/understanding-vue-refs/#:~:text=Ref%20s%20are%20Vue.,element%20in%20your%20Vue%20instance.
-// When ref attribute is added to element, this element then can be referenced
-// in template. It is sort of templatecement of getElementById (but better)
-import { ref } from "vue";
+import StudentA from "./submissions/Student A/StudentA.vue";
+import StudentB from "./submissions/Student B/StudentB.vue";
+import StudentC from "./submissions/Student C/StudentC.vue";
+import Albertocarro from "./submissions/albertocarro/Albertocarro.vue";
 
-// Define variables and constants
-var count = ref(0);
-var firstSlider = ref(25);
-var runToggle = ref(false);
+var submissions = [
+  { name: "Student a submission", visible: ref(true) },
+  { name: "Student b submission", visible: ref(false) },
+  { name: "Student c submission", visible: ref(false) },
+  { name: "Alberto Carro submission", visible: ref(false) },
+];
 
-// Define functions
-function increment() {
-  count.value++;
-  //console.log(`Value is: ${count.value}.`);
+function toggleComponent(item) {
+  submissions.forEach(
+    (menuItem) => (menuItem.visible.value = item === menuItem)
+  );
 }
 
-function updateValue(newValue, parameterName) {
-  if (parameterName === "Height") {
-    firstSlider.value = newValue;
-  }
-}
-
-function updateToggle(newValue) {
-  runToggle.value = newValue;
-}
+onMounted(() => {
+  loadRhino();
+});
 </script>
 
-<!-- Template is a HTML-based syntax that allows you to bind the rendered DOM elements
-with data, objects, functions etc. -->
 <template>
   <div id="top-bar">
     <div id="title-container">
       <img class="logo-image" alt="Iaac logo" src="./assets/iaac-white.png" />
-      <h2>Digital Tools for Cloud-based Data Management</h2>
+      <h2 class="course-title">
+        Digital Tools for Cloud-based Data Management
+      </h2>
     </div>
   </div>
 
-  <div id="content">
-    <!-- First example -> button -->
-    <!-- <button @click="increment">Add one more</button>
-    <p>Count is: {{  count }}</p> -->
+  <div class="container">
+    <div class="left-sidebar">
+      <hr />
 
-    <div>
-      <!-- Vue component injected into App.vue component template.
-      That makes it App.vue a parent and SliderInput.vue a child. -->
-      <SliderInput title="Height"
-        v-bind:min="1" v-bind:max="50" v-bind:step="1"
-        v-on:updateValue="updateValue"/>
-
-      <ToggleInput title="Run?" v-on:updateValue="updateToggle"></ToggleInput>
-
-      <h2>Value received in App.vue: {{ firstSlider }}</h2>
-      <h2>Value received in App.vue: {{ runToggle }}</h2>
+      <h3>Submissions</h3>
+      <ul class="menu">
+        <li
+          v-for="(item, index) in submissions"
+          :key="index"
+          :class="{ selected: item.visible.value }"
+          @click="toggleComponent(item)"
+        >
+          {{ item.name }}
+        </li>
+      </ul>
     </div>
 
-    <div id="content">
-      <GeometryView :size="firstSlider" />
-
-      <!-- uncomment to add another geometryview -->
-      <!-- <GeometryView :size="firstSlider"/> -->
+    <div class="content">
+      <StudentA v-if="submissions[0].visible.value"></StudentA>
+      <StudentB v-if="submissions[1].visible.value"></StudentB>
+      <StudentC v-if="submissions[2].visible.value"></StudentC>
+      <Albertocarro v-if="submissions[3].visible.value"></Albertocarro>
     </div>
   </div>
 </template>
 
-<!-- Style is for CSS styling -->
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   color: #2c3e50;
 }
 
@@ -86,7 +75,7 @@ with data, objects, functions etc. -->
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #1c2127;
 }
 
 #title-container {
@@ -96,7 +85,14 @@ with data, objects, functions etc. -->
   margin-right: 1.5rem;
 }
 
-#content {
+hr {
+  border: 1px solid #f2dd1c;
+}
+.left-sidebar {
+  margin: 5px 10px 2px 0px;
+  padding: 5px;
+}
+.content {
   display: flex;
 }
 
@@ -112,5 +108,42 @@ h2 {
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+  margin: 10px 0px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 10px 0px;
+  margin: 0px;
+  width: 200px;
+}
+
+.menu li {
+  padding: 10px 10px;
+  margin: 2px 0px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s ease-out;
+  transition: background-color 0.2s ease-out;
+  border-radius: 30px;
+  border: solid transparent;
+  font-weight: bolder;
+}
+
+.menu li:hover {
+  background-color: #f2dd1c4e;
+}
+
+.selected {
+  background-color: #f2dd1c;
 }
 </style>

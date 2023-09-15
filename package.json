@@ -1,18 +1,28 @@
 {
-  "name": "bimsc23-datamgmt-session05",
-  "version": "0.1.0",
+  "name": "session06",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "test": "src/scripts/compute.js"
   },
   "dependencies": {
-    "core-js": "^3.8.3",
+    "compute-rhino3d": "^0.13.0-beta",
+    "pinia": "^2.0.28",
+    "rhino3dm": "^7.15.0",
     "three": "^0.149.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-service": "~5.0.0"
+    "@rushstack/eslint-patch": "^1.1.4",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "eslint": "^8.22.0",
+    "eslint-plugin-vue": "^9.3.0",
+    "prettier": "^2.7.1",
+    "vite": "^4.0.0"
   }
 }
