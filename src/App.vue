@@ -3,16 +3,11 @@
 import { ref, onMounted } from "vue";
 import { loadRhino } from "@/scripts/compute.js";
 
-import StudentA from "./submissions/Student A/StudentA.vue";
-import StudentB from "./submissions/Student B/StudentB.vue";
-import StudentC from "./submissions/Student C/StudentC.vue";
 import Albertocarro from "./submissions/albertocarro/Albertocarro.vue";
+// import janasemaan from "./submissions/janasemaan/janasemaan.vue";
 
 var submissions = [
-  { name: "Student a submission", visible: ref(true) },
-  { name: "Student b submission", visible: ref(false) },
-  { name: "Student c submission", visible: ref(false) },
-  { name: "Alberto Carro submission", visible: ref(false) },
+  { name: "Latent Walk Mode", visible: ref(true) },
 ];
 
 function toggleComponent(item) {
@@ -21,23 +16,57 @@ function toggleComponent(item) {
   );
 }
 
+let aboutPageVisible = ref(true)
+
+function aboutPage()
+{
+  submissions.forEach(submission => submission.visible.value = false)
+  aboutPageVisible.visible.value = true;
+}
+
 onMounted(() => {
-  loadRhino();
+  // loadRhino();
+  loadGLTFModel();
 });
 </script>
 
+
 <template>
-  <div id="top-bar">
+
+<div id="top-bar">
+    <div>
+       <span class="my-nav" @mouseenter="openNav">  &#9776;</span>
+     </div>
+
     <div id="title-container">
-      <img class="logo-image" alt="Iaac logo" src="./assets/iaac-white.png" />
-      <h2 class="course-title">
-        Digital Tools for Cloud-based Data Management
+
+      <h2 class="course-title" style="font-family: 'Roboto Mono', monospace;">
+        Latent<br>Studio    
       </h2>
+      <img class="logo-image" alt="Iaac logo" src="src\assets\ViewCapture20230907_003737.jpg" />
     </div>
-  </div>
+</div>
+
+<div id="mySidenav" class="sidenav" @mouseleave="closeNav">
+    <a href="javascript:void(0)" class="closebtn" 
+    :onclick="closeNav" 
+    >&times;</a>
+    <div class="left-sidebar">
+      <h3 class="home-button" :class="{ selected: aboutPageVisible.value }" @click="aboutPage()">About</h3>
+      <hr />
+
+      <ul class="menu">
+        <li v-for="(item, index) in submissions" :key="index" :class="{ selected: item.visible.value }"
+          @click="toggleComponent(item)">
+          {{ item.name }}
+        </li>
+      </ul>
+    </div>
+</div>
+
 
   <div class="container">
-    <div class="left-sidebar">
+    <!-- <div class="left-sidebar">
       <hr />
 
       <h3>Submissions</h3>
@@ -51,15 +80,13 @@ onMounted(() => {
           {{ item.name }}
         </li>
       </ul>
-    </div>
-
+    </div> -->
     <div class="content">
-      <StudentA v-if="submissions[0].visible.value"></StudentA>
-      <StudentB v-if="submissions[1].visible.value"></StudentB>
-      <StudentC v-if="submissions[2].visible.value"></StudentC>
-      <Albertocarro v-if="submissions[3].visible.value"></Albertocarro>
+      <Albertocarro v-if="submissions[0].visible.value"></Albertocarro>
+      <!-- <janasemaan v-if="submissions[1].visible.value"></janasemaan> -->
     </div>
   </div>
+
 </template>
 
 
@@ -68,14 +95,16 @@ onMounted(() => {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #2d7fd1;
 }
 
 #top-bar {
   display: flex;
-  align-items: center;
+  font-size: 1rem;
+  align-items: safe;
   justify-content: space-between;
-  background-color: #1c2127;
+  background-color: #080808;
+
 }
 
 #title-container {
@@ -86,8 +115,9 @@ onMounted(() => {
 }
 
 hr {
-  border: 1px solid #f2dd1c;
+  border: 1px solid #ff65f7;
 }
+
 .left-sidebar {
   margin: 5px 10px 2px 0px;
   padding: 5px;
@@ -144,6 +174,6 @@ h2 {
 }
 
 .selected {
-  background-color: #f2dd1c;
+  background-color: #2b302b;
 }
 </style>

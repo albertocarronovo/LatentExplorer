@@ -51,7 +51,7 @@ import { ref, computed } from "vue";
 // Import components
 import ToggleInput from "./components/ToggleInput.vue";
 import StudentCSlider from "./components/StudentCSlider.vue";
-import GeometryView from "./components/GeometryView.vue";
+import GeometryView from "./components/GltfView.vue";
 import DropdownSelector from "./components/DropdownSelector.vue";
 
 // Define the tittle of your project
@@ -63,19 +63,7 @@ const Slider1 = ref(2); //default slider value
 
 /* const SliderName2 = ref("Width"); //must match the Input name in your GH definition!
 const Slider2 = ref(6); //default slider value
-
-const SliderName3 = ref("Height"); //must match the Input name in your GH definition!
-const Slider3 = ref(21); //default slider value
-
-const SliderName4 = ref("Floor Height"); //must match the Input name in your GH definition!
-const Slider4 = ref(3); //default slider value
-
-const SliderName5 = ref("Module Size"); //must match the Input name in your GH definition!
-const Slider5 = ref(3); //default slider value
-
-const SliderName6 = ref("Wall Width"); //must match the Input name in your GH definition!
-const Slider6 = ref(1); //default slider value */
-
+*/
 const toggleName = ref("Voxel");
 var runToggle = ref(true);
 

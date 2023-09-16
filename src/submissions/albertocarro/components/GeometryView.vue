@@ -9,21 +9,25 @@
 // Imports;
 import { onMounted, onUpdated } from "vue";
 import * as THREE from "three";
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+// import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { runCompute } from "@/scripts/compute.js";
 import { Rhino3dmLoader } from "three/addons/loaders/3DMLoader.js";
 
 import ButtonInput from "commoncomponents/ButtonInput.vue";
 
 const loader = new Rhino3dmLoader();
+
 loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/");
 
 // Property coming from parent component
 const props = defineProps(["data", "path"]);
 const emits = defineEmits(["updateMetadata"]);
+
 // Three js objects
-let renderer, camera, scene, controls, geometry;
+let renderer, camera, scene, controls;
 
 const widthRatio = 0.7;
 const heightRatio = 0.85;
@@ -49,7 +53,7 @@ function init() {
 
   // scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene.background = new THREE.Color(0x252020);
 
   // orbit controls
   controls = new OrbitControls(camera, renderer.domElement);
@@ -67,8 +71,6 @@ function init() {
   spotlight.shadow.camera.far = 100;
   scene.add(spotlight);
 
-
-
   const ambientLight = new THREE.AmbientLight(0xffffff, 4);
   scene.add(ambientLight);
 
@@ -77,37 +79,6 @@ function init() {
   shadowMaterial.opacity = 0.5;
   shadowMaterial.blending = THREE.MultiplyBlending;
 
-  // add floor geometry
-  var groundGeometry = new THREE.PlaneGeometry(30, 30);
-  var ground = new THREE.Mesh(groundGeometry, shadowMaterial);
-  ground.position.set(0,0,-1.8)
-  ground.receiveShadow = true;
-  scene.add(ground);
-
-/*
-  // add cube to show controls
-  const geometry = new THREE.BoxGeometry(1, 2, 1);
-  const material = new THREE.MeshNormalMaterial();
-  const cube = new THREE.Mesh(geometry, material);
-  cube.castShadow=true;
-  scene.add(cube);
- 
-  // transform controls are equivalent to rhino gumball
-  const transformControls = new TransformControls(camera, renderer.domElement);
-
-  //   disable other controls when mving this transform control
-  transformControls.addEventListener("change", animate);
-  transformControls.addEventListener("mouseDown", function () {
-    controls.enabled = false;
-  });
-  transformControls.addEventListener("mouseUp", function () {
-    controls.enabled = true;
-  });
-
-  transformControls.attach(cube);
-  scene.add(transformControls);
-*/
-  // add fun shape
   animate(); 
 }
 
@@ -147,6 +118,7 @@ async function compute() {
       })
 
       scene.add(object);
+      fitCameraToSelection(camera, controls, [object] )
       console.log("Compute done");
 
   });
@@ -165,6 +137,47 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
   renderer.render(scene, camera);
+}
+
+function fitCameraToSelection(camera, controls, selection, fitOffset = 1.2) {
+  let box = new THREE.Box3();
+
+  for (const object of selection) {
+    if (object.isMesh) {
+      box.expandByObject(object);
+    } else {
+      // If the object is not a mesh (like a group), calculate its bounding box recursively
+      object.traverse(child => {
+        if (child.isMesh) {
+          box.expandByObject(child);
+        }
+      });
+    }
+  }
+
+  let size = box.getSize(new THREE.Vector3());
+  let center = box.getCenter(new THREE.Vector3());
+
+  const maxSize = Math.max(size.x, size.y, size.z);
+  const fitHeightDistance = maxSize / (2 * Math.atan(Math.PI * camera.fov / 360));
+  const fitWidthDistance = fitHeightDistance / camera.aspect;
+  const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
+
+  const direction = controls.target.clone()
+    .sub(camera.position)
+    .normalize()
+    .multiplyScalar(distance);
+
+  controls.maxDistance = distance * 10;
+  controls.target.copy(center);
+
+  camera.near = distance / 100;
+  camera.far = distance * 100;
+  camera.updateProjectionMatrix();
+
+  camera.position.copy(controls.target).sub(direction);
+
+  controls.update();
 }
 
 function onSliderChange(color) {
